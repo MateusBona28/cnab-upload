@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CNAB-upload</title>
+</head>
+
+<body>
+
+    {% if files %}
+        <h1>Todas as transações:</h1>
+        <div>
+            <h2>Saldo: </h2> <h2>R$ {{total}}</h2>
+        </div>
+
+        <table>
+            <tr>
+                <th>Tipo</th>
+                <th>Data</th>
+                <th>Valor</th>
+                <th>CPF</th>
+                <th>N° cartão</th>
+                <th>Hora</th>
+                <th>Dono da loja</th>
+                <th>Nome da loja</th>
+            </tr>
+            {% for file in files %}
+            <tr>
+                <td>{{file.tipo}}</td>
+                <td>{{file.data}}</td>
+                <td>{{file.valor}}</td>
+                <td>{{file.CPF}}</td>
+                <td>{{file.cartao}}</td>
+                <td>{{file.hora}}</td>
+                <td>{{file.dono}}</td>
+                <td>{{file.nome_loja}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <h2>Você ainda não possui transações cadastradas.</h2>
+    {% endif %}
+
+    <form action="{% url "uploader" %}" method="post" enctype="multipart/form-data" >
+        {% csrf_token %}
+        {{ message }}
+        <p>{{ form.non_field_errors }}</p>
+
+        <p>{{ form.docfile.label_tag }}</p>
+
+        <p>
+            {{ form.docfile }}
+        </p>
+        
+        <p><input type="submit" value="Upload"/></p>
+    </form>
+</body>
+
+</html>
